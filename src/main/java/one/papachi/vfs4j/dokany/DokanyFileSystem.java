@@ -12,6 +12,7 @@ import one.papachi.dokany4j.results.DeleteFileResult;
 import one.papachi.dokany4j.results.DokanFileInfo;
 import one.papachi.dokany4j.results.FindData;
 import one.papachi.dokany4j.results.FindFilesResult;
+import one.papachi.dokany4j.results.FlushFileBuffers;
 import one.papachi.dokany4j.results.GetDiskFreeSpaceResult;
 import one.papachi.dokany4j.results.GetFileInformationResult;
 import one.papachi.dokany4j.results.GetFileSecurityResult;
@@ -94,7 +95,7 @@ public class  DokanyFileSystem extends Dokany4j {
                         FileInfo fileInfo = fileSystem.listFile(fileName);
                         if (!fileInfo.isDirectory())
                             fileSystem.setFileSize(fileName, 0L);
-                        return new CreateFileResult(NtStatus.STATUS_SUCCESS.getStatus(), true);
+                        return new CreateFileResult(NtStatus.STATUS_OBJECT_NAME_COLLISION.getStatus(), fileInfo.isDirectory());
                     } catch (Exception e) {
                     }
                     try {
@@ -200,6 +201,11 @@ public class  DokanyFileSystem extends Dokany4j {
         } catch (Exception e) {
             return new WriteFileResult(NtStatus.STATUS_ACCESS_DENIED.getStatus(), 0);
         }
+    }
+
+    @Override
+    public FlushFileBuffers flushFileBuffers(String fileName, DokanFileInfo dokanFileInfo) {
+        return new FlushFileBuffers(NtStatus.STATUS_SUCCESS.getStatus());
     }
 
     @Override
