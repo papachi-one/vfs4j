@@ -12,18 +12,23 @@ import one.papachi.dokany4j.results.DeleteFileResult;
 import one.papachi.dokany4j.results.DokanFileInfo;
 import one.papachi.dokany4j.results.FindData;
 import one.papachi.dokany4j.results.FindFilesResult;
+import one.papachi.dokany4j.results.FindStreamsResult;
 import one.papachi.dokany4j.results.FlushFileBuffers;
 import one.papachi.dokany4j.results.GetDiskFreeSpaceResult;
 import one.papachi.dokany4j.results.GetFileInformationResult;
 import one.papachi.dokany4j.results.GetFileSecurityResult;
 import one.papachi.dokany4j.results.GetVolumeInformationResult;
+import one.papachi.dokany4j.results.LockFileResult;
 import one.papachi.dokany4j.results.MountedResult;
 import one.papachi.dokany4j.results.MoveFileResult;
 import one.papachi.dokany4j.results.ReadFileResult;
 import one.papachi.dokany4j.results.SetAllocationSizeResult;
 import one.papachi.dokany4j.results.SetEndOfFileResult;
 import one.papachi.dokany4j.results.SetFileAttributesResult;
+import one.papachi.dokany4j.results.SetFileSecurityResult;
 import one.papachi.dokany4j.results.SetFileTimeResult;
+import one.papachi.dokany4j.results.UnlockFileResult;
+import one.papachi.dokany4j.results.UnmountedResult;
 import one.papachi.dokany4j.results.WriteFileResult;
 import one.papachi.vfs4j.VirtualFileSystem;
 import one.papachi.vfs4j.VirtualFileSystem.FileInfo;
@@ -297,12 +302,39 @@ public class  DokanyFileSystem extends Dokany4j {
 
     @Override
     public GetVolumeInformationResult getVolumeInformation(DokanFileInfo dokanFileInfo) {
-        return new GetVolumeInformationResult(NtStatus.STATUS_SUCCESS.getStatus(), "dokany4j", 1234567890, 110, SUPPORTED_FLAGS, "dokan4j");
+        return new GetVolumeInformationResult(NtStatus.STATUS_SUCCESS.getStatus(), "dokany4j", 1234567890, 255, SUPPORTED_FLAGS, "dokan4j");
     }
 
     @Override
     public MountedResult mounted(String mountPoint, DokanFileInfo dokanFileInfo) {
+        System.out.println("mounted on " + mountPoint);
         return new MountedResult(NtStatus.STATUS_SUCCESS.getStatus());
+    }
+
+    @Override
+    public UnmountedResult unmounted(DokanFileInfo dokanFileInfo) {
+        System.out.println("unmounted");
+        return new UnmountedResult(NtStatus.STATUS_SUCCESS.getStatus());
+    }
+
+    @Override
+    public FindStreamsResult findStreams(String fileName, DokanFileInfo dokanFileInfo) {
+        return new FindStreamsResult(NtStatus.STATUS_NOT_IMPLEMENTED.getStatus());
+    }
+
+    @Override
+    public LockFileResult lockFile(String fileName, long offset, long length, DokanFileInfo dokanFileInfo) {
+        return new LockFileResult(NtStatus.STATUS_NOT_IMPLEMENTED.getStatus());
+    }
+
+    @Override
+    public UnlockFileResult unlockFile(String fileName, long offset, long length, DokanFileInfo dokanFileInfo) {
+        return new UnlockFileResult(NtStatus.STATUS_NOT_IMPLEMENTED.getStatus());
+    }
+
+    @Override
+    public SetFileSecurityResult setFileSecurity(String fileName, int securityInformation, ByteBuffer security, DokanFileInfo dokanFileInfo) {
+        return new SetFileSecurityResult(NtStatus.STATUS_NOT_IMPLEMENTED.getStatus());
     }
 
     enum FileAttribute {
