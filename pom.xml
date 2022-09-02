@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>one.papachi.vfs4j</groupId>
+    <groupId>one.papachi</groupId>
     <artifactId>vfs4j</artifactId>
     <version>1.0.0</version>
 
@@ -15,10 +15,17 @@
 
     <dependencies>
         <dependency>
-            <groupId>one.papachi.dokany4j</groupId>
+            <groupId>one.papachi</groupId>
             <artifactId>dokany4j</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/papachi-one/vfs4j</url>
+        </repository>
+    </distributionManagement>
 
 </project>
