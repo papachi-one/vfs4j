@@ -13,6 +13,17 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>dokany4j</id>
+            <url>https://maven.pkg.github.com/papachi-one/dokany4j</url>
+        </repository>
+        <repository>
+            <id>fuse4j</id>
+            <url>https://maven.pkg.github.com/papachi-one/fuse4j</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>one.papachi</groupId>
