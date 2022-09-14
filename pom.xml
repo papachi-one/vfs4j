@@ -24,6 +24,11 @@
             <artifactId>fuse4j</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>one.papachi</groupId>
+            <artifactId>macfuse4j</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <distributionManagement>

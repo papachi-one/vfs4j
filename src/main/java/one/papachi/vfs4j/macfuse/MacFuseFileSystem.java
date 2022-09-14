@@ -1,35 +1,19 @@
-package one.papachi.vfs4j.fuse;
+package one.papachi.vfs4j.macfuse;
 
-
-import one.papachi.fuse4j.Fuse4j;
-import one.papachi.fuse4j.results.ChmodResult;
-import one.papachi.fuse4j.results.ChownResult;
-import one.papachi.fuse4j.results.CreateResult;
-import one.papachi.fuse4j.results.DirEntry;
-import one.papachi.fuse4j.results.GetattrResult;
-import one.papachi.fuse4j.results.MkdirResult;
-import one.papachi.fuse4j.results.OpenResult;
-import one.papachi.fuse4j.results.ReadResult;
-import one.papachi.fuse4j.results.ReaddirResult;
-import one.papachi.fuse4j.results.RenameResult;
-import one.papachi.fuse4j.results.RmdirResult;
-import one.papachi.fuse4j.results.TruncateResult;
-import one.papachi.fuse4j.results.UnlinkResult;
-import one.papachi.fuse4j.results.UtimentsResult;
-import one.papachi.fuse4j.results.WriteResult;
+import one.papachi.macfuse4j.results.*;
+import one.papachi.macfuse4j.MacFuse4j;
 import one.papachi.vfs4j.VirtualFileSystem;
-import one.papachi.vfs4j.VirtualFileSystem.FileInfo;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class FuseFileSystem extends Fuse4j {
+public class MacFuseFileSystem extends MacFuse4j {
 
     private final VirtualFileSystem fileSystem;
 
-    public FuseFileSystem(VirtualFileSystem fileSystem) {
+    public MacFuseFileSystem(VirtualFileSystem fileSystem) {
         this.fileSystem = fileSystem;
     }
 
@@ -39,7 +23,7 @@ public class FuseFileSystem extends Fuse4j {
             return new GetattrResult(0, 040000 | 0755, 2, 1000, 1000, 0, 0, 0, 0);
         }
         try {
-            FileInfo fileInfo = fileSystem.listFile(fileName);
+            VirtualFileSystem.FileInfo fileInfo = fileSystem.listFile(fileName);
             boolean isDirectory = fileInfo.isDirectory();
             int mode = isDirectory ? 040000 | 0755 : 0100000 | 0755;
             return new GetattrResult(0, mode, isDirectory ? 2 : 1, 1000, 1000, fileInfo.size(), fileInfo.atime() / 1000, fileInfo.mtime() / 1000, fileInfo.ctime() / 1000);
@@ -140,9 +124,9 @@ public class FuseFileSystem extends Fuse4j {
     @Override
     public ReaddirResult readdir(String fileName) {
         try {
-            List<FileInfo> data = fileSystem.listDirectory(fileName);
+            List<VirtualFileSystem.FileInfo> data = fileSystem.listDirectory(fileName);
             List<DirEntry> result = new ArrayList<>();
-            for (FileInfo fileInfo : data) {
+            for (VirtualFileSystem.FileInfo fileInfo : data) {
                 boolean isDirectory = fileInfo.isDirectory();
                 int mode = isDirectory ? 040000 | 0755 : 0100000 | 0755;
                 result.add(new DirEntry(fileInfo.filename(), mode, isDirectory ? 2 : 1, 1000, 1000, fileInfo.size(), fileInfo.atime() / 1000, fileInfo.mtime() / 1000, fileInfo.ctime() / 1000));
@@ -194,5 +178,6 @@ public class FuseFileSystem extends Fuse4j {
     public UtimentsResult utimens(String filename, long atime, long mtime) {
         return new UtimentsResult(0);
     }
+
 
 }
