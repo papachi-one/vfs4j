@@ -19,9 +19,6 @@ public class MacFuseFileSystem extends MacFuse4j {
 
     @Override
     public GetattrResult getattr(String fileName) {
-        if ("/".equals(fileName)) {
-            return new GetattrResult(0, 040000 | 0755, 2, 1000, 1000, 0, 0, 0, 0);
-        }
         try {
             VirtualFileSystem.FileInfo fileInfo = fileSystem.listFile(fileName);
             boolean isDirectory = fileInfo.isDirectory();
